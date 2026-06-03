@@ -102,20 +102,43 @@
       }
 
       function openFolder(f) {
-        document.getElementById('title').innerText = f;
-        folders.style.display = 'none';
-        gallery.style.display = 'block';
-        let h = '';
-        data[f].forEach(img => {
-          let url = location.origin + '/' + root + f + '/' + img;
-          h += `
-          <div class="imgcard">
-            <img src="${root}${f}/${img}">
-              <button onclick="navigator.clipboard.writeText('${url}');alert('URL Copied')">Copy URL</button>
-            </div>`;
-        });
-        imgs.innerHTML = h;
-      }
+
+    document.getElementById('title').innerText = f;
+    folders.style.display = 'none';
+    gallery.style.display = 'block';
+
+    let h = '';
+
+    data[f].forEach(img => {
+
+        // Current page path detect karega
+        let basePath = window.location.pathname.replace(/\/$/, '');
+
+        // Correct image URL banega
+        let imagePath = `${root}${f}/${img}`;
+        let url = window.location.origin + basePath + '/' + imagePath;
+
+        h += `
+        <div class="imgcard">
+            <img src="${imagePath}" alt="${img}">
+            <button onclick="copyUrl('${url}')">
+                Copy URL
+            </button>
+        </div>`;
+    });
+
+    imgs.innerHTML = h;
+}
+
+function copyUrl(url) {
+    navigator.clipboard.writeText(url);
+    alert('URL Copied:\n' + url);
+}
+
+function back() {
+    gallery.style.display = 'none';
+    folders.style.display = 'grid';
+}
 
       function back() {
         gallery.style.display = 'none';
