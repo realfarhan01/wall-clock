@@ -86,7 +86,7 @@
         "peacock-silver": ["01.png", "02.png", "03.png", "04.png"],
         "peacock-wood": ["01.png", "02.png", "03.png", "04.png"],
       };
-      const root = "images/";
+      const root = "./";
       const folders = document.getElementById('folders');
       for (let f in data) {
         folders.innerHTML += `
@@ -96,7 +96,7 @@
           </div>`;
       }
 
-      function openFolder(f) {
+function openFolder(f) {
 
     document.getElementById('title').innerText = f;
     folders.style.display = 'none';
@@ -106,16 +106,12 @@
 
     data[f].forEach(img => {
 
-        // Current page path detect karega
-        let basePath = window.location.pathname.replace(/\/$/, '');
-
-        // Correct image URL banega
         let imagePath = `${root}${f}/${img}`;
-        let url = window.location.origin + basePath + '/' + imagePath;
+        let url = new URL(imagePath, window.location.href).href;
 
         h += `
         <div class="imgcard">
-            <img src="${imagePath}" alt="${img}">
+            <img src="${imagePath}" alt="${img}" loading="lazy">
             <button onclick="copyUrl('${url}')">
                 Copy URL
             </button>
